@@ -1,12 +1,10 @@
 streamlit==1.36.0
 
-# LangChain ecosystem (FIXED versions)
+# LangChain ecosystem
 langchain==0.2.14
 langchain-core==0.2.43
 langchain-community==0.2.12
 langchain-openai==0.1.22
-
-# LangGraph (now compatible)
 langgraph==0.2.34
 
 # LLMs
@@ -16,19 +14,19 @@ mistralai==0.4.2
 # Search
 tavily-python==0.3.5
 
-# Scraping (FIXED)
+# Scraping (NO LXML)
 beautifulsoup4==4.12.3
 requests==2.32.3
-lxml==4.9.4   # 🔥 IMPORTANT downgrade (prebuilt wheel)
 
 # Async
 httpx==0.27.0
 aiohttp==3.10.5
 
-# Utils
-python-dotenv==1.0.1
+# Core
 pydantic==2.8.2
-tiktoken==0.7.0
+python-dotenv==1.0.1
+
+# Utils
 rich==13.7.1
 tenacity==8.5.0
 orjson==3.10.7
