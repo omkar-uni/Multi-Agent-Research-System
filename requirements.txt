@@ -1,6 +1,7 @@
 streamlit==1.36.0
 
-openai==1.40.6
+openai==0.28.1   # 👈 VERY IMPORTANT (downgrade)
+
 tavily-python==0.3.3
 
 beautifulsoup4==4.12.3
