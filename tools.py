@@ -5,10 +5,21 @@ from tavily import TavilyClient
 import os
 from dotenv import load_dotenv
 from rich import print
+import streamlit as st
 
 load_dotenv()
 
-tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+
+# ✅ Hybrid secret loader (works locally + cloud)
+def get_secret(key):
+    return st.secrets.get(key) or os.getenv(key)
+
+
+# ✅ Get Tavily API Key
+TAVILY_API_KEY = get_secret("TAVILY_API_KEY")
+
+# Initialize Tavily client
+tavily = TavilyClient(api_key=TAVILY_API_KEY)
 
 
 @tool
