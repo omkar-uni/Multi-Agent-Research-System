@@ -1,17 +1,16 @@
-from langchain_mistralai import ChatMistralAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from tools import web_search, scrape_url
 import streamlit as st
 
 # ✅ Get API key
-MISTRAL_API_KEY = st.secrets["MISTRAL_API_KEY"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
-# LLM
-llm = ChatMistralAI(
-    model="mistral-small-2506",
+llm = ChatOpenAI(
+    model="gpt-4o-mini",
     temperature=0,
-    mistral_api_key=MISTRAL_API_KEY,
+    api_key=OPENAI_API_KEY,
 )
 
 
