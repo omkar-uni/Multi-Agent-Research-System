@@ -2,26 +2,26 @@ import openai
 import streamlit as st
 from tools import web_search, scrape_url
 
-# API KEY
+# Set API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
 # -----------------------------
-# 🔍 SEARCH
+# 🔍 SEARCH AGENT
 # -----------------------------
 def build_search_agent():
     def run(query: str):
-        return web_search.invoke(query)
+        return web_search(query)
 
     return run
 
 
 # -----------------------------
-# 🌐 READER
+# 🌐 READER AGENT
 # -----------------------------
 def build_reader_agent():
     def run(url: str):
-        return scrape_url.invoke(url)
+        return scrape_url(url)
 
     return run
 
@@ -31,16 +31,16 @@ def build_reader_agent():
 # -----------------------------
 def writer_chain(data):
     prompt = f"""
-Write a detailed research report.
+You are an expert research writer.
 
 Topic: {data['topic']}
 
 Research:
 {data['research']}
 
-Structure:
+Write a structured report with:
 - Introduction
-- Key Findings
+- Key Findings (at least 3 points)
 - Conclusion
 - Sources
 """
@@ -58,16 +58,23 @@ Structure:
 # -----------------------------
 def critic_chain(data):
     prompt = f"""
-Evaluate this report:
+You are a strict research critic.
 
+Report:
 {data['report']}
 
-Format:
+Respond in this format:
+
 Score: X/10
+
 Strengths:
 - ...
+- ...
+
 Weakness:
 - ...
+- ...
+
 Verdict: ...
 """
 
