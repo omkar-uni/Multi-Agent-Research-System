@@ -1,11 +1,9 @@
 import openai
 import streamlit as st
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 from tools import web_search, scrape_url
 
 # API KEY
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
 # -----------------------------
@@ -47,12 +45,12 @@ Structure:
 - Sources
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
     )
 
-    return response.choices[0].message.content
+    return response["choices"][0]["message"]["content"]
 
 
 # -----------------------------
@@ -73,9 +71,9 @@ Weakness:
 Verdict: ...
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
     )
 
-    return response.choices[0].message.content
+    return response["choices"][0]["message"]["content"]
