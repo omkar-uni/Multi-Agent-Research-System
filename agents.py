@@ -1,21 +1,15 @@
-from langchain_openai import ChatOpenAI
+from openai import OpenAI
+import streamlit as st
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from tools import web_search, scrape_url
-import streamlit as st
 
-# ✅ Get API key
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0,
-    api_key=OPENAI_API_KEY,
-)
+# API KEY
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
 # -----------------------------
-# 🔍 SEARCH (NO AGENT)
+# 🔍 SEARCH
 # -----------------------------
 def build_search_agent():
     def run(query: str):
@@ -25,7 +19,7 @@ def build_search_agent():
 
 
 # -----------------------------
-# 🌐 READER (NO AGENT)
+# 🌐 READER
 # -----------------------------
 def build_reader_agent():
     def run(url: str):
@@ -37,41 +31,38 @@ def build_reader_agent():
 # -----------------------------
 # ✍️ WRITER
 # -----------------------------
-writer_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", "You are an expert research writer."),
-        (
-            "human",
-            """Write a detailed report.
+def writer_chain(data):
+    prompt = f"""
+Write a detailed research report.
 
-Topic: {topic}
+Topic: {data['topic']}
 
 Research:
-{research}
+{data['research']}
 
 Structure:
 - Introduction
 - Key Findings
 - Conclusion
-- Sources""",
-        ),
-    ]
-)
+- Sources
+"""
 
-writer_chain = writer_prompt | llm | StrOutputParser()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+    )
+
+    return response.choices[0].message.content
 
 
 # -----------------------------
 # 🧠 CRITIC
 # -----------------------------
-critic_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", "You are a strict research critic."),
-        (
-            "human",
-            """Evaluate this report:
+def critic_chain(data):
+    prompt = f"""
+Evaluate this report:
 
-{report}
+{data['report']}
 
 Format:
 Score: X/10
@@ -79,9 +70,12 @@ Strengths:
 - ...
 Weakness:
 - ...
-Verdict: ...""",
-        ),
-    ]
-)
+Verdict: ...
+"""
 
-critic_chain = critic_prompt | llm | StrOutputParser()
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+    )
+
+    return response.choices[0].message.content
