@@ -31,12 +31,12 @@ Provide a list of URLs and a brief summary of each source.
 
     reader_agent = build_reader_agent()
 
-    # Extract URLs from search result
+    # Extract URLs
     urls = re.findall(r"https?://\S+", state["search_result"])
 
     scraped_data = []
 
-    for url in urls[:3]:  # limit to top 3 URLs
+    for url in urls[:3]:  # limit to 3
         print(f"\nScraping: {url}")
         content = reader_agent(url)
         scraped_data.append(content)
@@ -60,11 +60,11 @@ SCRAPED CONTENT:
 {state['scraped_content']}
 """
 
-    state["report"] = writer_chain.invoke(
+    # ✅ FIXED (no .invoke)
+    state["report"] = writer_chain(
         {
             "topic": topic,
             "research": research_combined,
-            "info": "Write a detailed, structured research report.",
         }
     )
 
@@ -77,7 +77,8 @@ SCRAPED CONTENT:
     print("Critic Reviewing...")
     print("=" * 50)
 
-    state["feedback"] = critic_chain.invoke({"report": state["report"]})
+    # ✅ FIXED (no .invoke)
+    state["feedback"] = critic_chain({"report": state["report"]})
 
     print("\nCritic Feedback:\n", state["feedback"])
 
