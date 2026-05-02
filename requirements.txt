@@ -1,0 +1,39 @@
+# UI
+streamlit==1.36.0
+
+# LangChain ecosystem
+langchain==0.2.14
+langchain-core==0.2.35
+langchain-community==0.2.12
+langchain-openai==0.1.22
+
+# LangGraph (you are using it)
+langgraph==0.2.34
+
+# LLM providers
+openai==1.40.6
+mistralai==0.4.2
+
+# Search tool
+tavily-python==0.3.5
+
+# Web scraping
+beautifulsoup4==4.12.3
+requests==2.32.3
+lxml==5.2.2
+
+# Async support
+httpx==0.27.0
+aiohttp==3.10.5
+
+# Env variables
+python-dotenv==1.0.1
+
+# Core dependencies
+pydantic==2.8.2
+tiktoken==0.7.0
+
+# Utilities
+rich==13.7.1
+tenacity==8.5.0
+orjson==3.10.7
